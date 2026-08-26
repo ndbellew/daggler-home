@@ -1,6 +1,18 @@
 name: daggler-home
 
 services:
+  portainer:
+    image: portainer/portainer-ce:2.39.6
+    container_name: daggler-portainer
+    restart: unless-stopped
+
+    ports:
+      - "${DAGGLER_LAN_IP}:9443:9443/tcp"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/daggler-home/portainer:/data
+
   unbound:
     build:
       context: ./services/unbound
