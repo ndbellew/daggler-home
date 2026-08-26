@@ -1,0 +1,13 @@
+.env
+*.env
+!.env.example
+!*.env.example
+
+secrets/
+*.key
+*.pem
+
+data/
+backups/
+
+.DS_Store
