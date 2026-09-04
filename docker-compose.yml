@@ -2,12 +2,12 @@ name: daggler-home
 
 services:
   portainer:
-    image: portainer/portainer-ce:2.39.6
+    image: portainer/portainer-ce:2.45.0
     container_name: daggler-portainer
     restart: unless-stopped
 
     ports:
-      - "${DAGGLER_LAN_IP}:9443:9443/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:9443:9443/tcp"
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -24,6 +24,51 @@ services:
         aliases:
           - unbound
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: daggler-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+    volumes:
+      - ./services/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    container_name: daggler-node-exporter
+    command:
+      - --path.rootfs=/host
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: daggler-grafana
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP must be set}:3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./services/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - monitoring
+    secrets:
+      - grafana_admin_password
+    restart: unless-stopped
+
   pihole:
     image: pihole/pihole:2026.07.2
     container_name: daggler-pihole
@@ -34,9 +79,9 @@ services:
       - unbound
 
     ports:
-      - "${DAGGLER_LAN_IP}:53:53/tcp"
-      - "${DAGGLER_LAN_IP}:53:53/udp"
-      - "${DAGGLER_LAN_IP}:8080:80/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:53:53/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:53:53/udp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:8080:80/tcp"
 
     environment:
       TZ: "${TZ}"
@@ -44,6 +89,8 @@ services:
       FTLCONF_dns_upstreams: "unbound#5335"
       FTLCONF_dns_listeningMode: "ALL"
       FTLCONF_dns_dnssec: "false"
+      FTLCONF_dns_hosts: |-
+        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP must be set} portainer.${DAGGLER_DOMAIN:-daggler.home.arpa}
 
     secrets:
       - pihole_admin_password
@@ -58,6 +105,9 @@ secrets:
   pihole_admin_password:
     file: /etc/daggler-home/secrets/pihole_admin_password
 
+  grafana_admin_password:
+    file: /etc/daggler-home/secrets/grafana_admin_password
+
 networks:
   dns:
     name: daggler-dns
@@ -65,3 +115,15 @@ networks:
     ipam:
       config:
         - subnet: 172.30.53.0/24
+
+  monitoring:
+    name: daggler-monitoring
+    driver: bridge
+
+volumes:
+  prometheus_data:
+    name: daggler-prometheus-data
+
+  grafana_data:
+    name: daggler-grafana-data
+
