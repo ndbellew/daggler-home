@@ -1,4 +1,4 @@
-bash scripts/bootstrap.sh
+bash bootstrap.sh
 cd ..
 docker compose up --build -d
 cd scripts
