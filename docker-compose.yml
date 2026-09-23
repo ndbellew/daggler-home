@@ -110,12 +110,6 @@ services:
       FTLCONF_dns_upstreams: "unbound#5335"
       FTLCONF_dns_listeningMode: "ALL"
       FTLCONF_dns_dnssec: "false"
-      FTLCONF_dns_hosts: |-
-        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set} portainer.${DAGGLER_DOMAIN:-daggler.home.arpa}
-        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set} grafana.${DAGGLER_DOMAIN:-daggler.home.arpa}
-        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set} prometheus.${DAGGLER_DOMAIN:-daggler.home.arpa}
-        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set} pihole.${DAGGLER_DOMAIN:-daggler.home.arpa}
-        ${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set} odysseus.${DAGGLER_DOMAIN:-daggler.home.arpa}
 
     secrets:
       - pihole_admin_password
