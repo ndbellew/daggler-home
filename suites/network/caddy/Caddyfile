@@ -18,7 +18,7 @@ prometheus.{$DAGGLER_DOMAIN} {
 portainer.{$DAGGLER_DOMAIN} {
     tls internal
 
-    reverse_proxy https://portainer:9443 {
+    reverse_proxy https://portainer:9443  {
         transport http {
             tls_insecure_skip_verify
         }
