@@ -1,0 +1,39 @@
+name: portainer
+display_name: Portainer
+suite: utilities
+
+description: Web-based management interface for Docker containers and services
+
+provides:
+  - container-management
+  - docker-management
+  - container-ui
+
+requirements:
+  docker_socket: true
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 128
+
+deployment:
+  compose_service: portainer
+
+ports:
+  - port: 9443
+    protocol: tcp
+    internal: true
+
+storage:
+  - source: /var/lib/daggler-home/portainer
+    target: /data
+
+mounts:
+  - source: /var/run/docker.sock
+    target: /var/run/docker.sock
+
+web:
+  enabled: true
+  hostname: portainer
+  protocol: https
+  port: 9443

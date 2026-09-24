@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/grafana:13.2.1
+    container_name: daggler-grafana
+    hostname: grafana
+    restart: unless-stopped
+
+    environment:
+      TZ: "${TZ}"
+
+    volumes:
+      - /var/lib/daggler-home/grafana:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning:ro
+
+    networks:
+      - daggler

@@ -1,0 +1,16 @@
+
+include:
+  - ./grafana/compose.yaml
+  - ./prometheus/compose.yaml
+  - ./portainer/compose.yaml
+
+secrets:
+  grafana_admin_password:
+    file: /etc/daggler-home/secrets/grafana_admin_password
+
+volumes:
+  prometheus_data:
+    name: daggler-prometheus-data
+
+  grafana_data:
+    name: daggler-grafana-data

@@ -1,0 +1,32 @@
+name: prometheus
+display_name: Prometheus
+suite: utilities
+
+description: Metrics collection and time-series monitoring database
+
+provides:
+  - metrics-source
+  - metrics-storage
+  - monitoring-data
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 256
+
+deployment:
+  compose_service: prometheus
+
+ports:
+  - port: 9090
+    protocol: tcp
+    internal: true
+
+storage:
+  - source: /var/lib/daggler-home/prometheus
+    target: /prometheus
+
+web:
+  enabled: true
+  hostname: prometheus
+  protocol: http
+  port: 9090

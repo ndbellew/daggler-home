@@ -1,0 +1,13 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: daggler-portainer
+    hostname: portainer
+    restart: unless-stopped
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/daggler-home/portainer:/data
+
+    networks:
+      - daggler

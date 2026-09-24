@@ -15,17 +15,22 @@ prometheus.{$DAGGLER_DOMAIN} {
     reverse_proxy prometheus:9090
 }
 
+portainer.{$DAGGLER_DOMAIN} {
+    tls internal
+
+    reverse_proxy https://portainer:9443{
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
 pihole.{$DAGGLER_DOMAIN} {
     tls internal
     reverse_proxy pihole:80
 }
 
-portainer.{$DAGGLER_DOMAIN} {
-    tls internal
-    reverse_proxy portainer:9000
-}
-
 wazuh.{$DAGGLER_DOMAIN} {
     tls internal
-    reverse_proxy wazuh:443
+    reverse_proxy https://wazuh:443
 }

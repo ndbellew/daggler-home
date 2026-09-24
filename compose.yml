@@ -1,3 +1,14 @@
+name: daggler-home
+
 include:
   - ./suites/network/compose.yaml
   - ./suites/utilities/compose.yaml
+  # later:
+  # - ./suites/security/compose.yaml
+  # - ./suites/ai/compose.yaml
+  # - ./suites/media/compose.yaml
+
+networks:
+  daggler:
+    name: daggler
+    driver: bridge

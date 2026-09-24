@@ -1,0 +1,17 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: daggler-prometheus
+    hostname: prometheus
+    restart: unless-stopped
+
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/prometheus"
+
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - /var/lib/daggler-home/prometheus:/prometheus
+
+    networks:
+      - daggler

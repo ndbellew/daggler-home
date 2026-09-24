@@ -6,10 +6,15 @@ include:
 networks:
   dns:
     name: daggler-dns
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.53.0/24
 
   proxy:
     name: daggler-proxy
+    driver: bridge
 
 secrets:
   pihole_admin_password:
-    file: ../../secrets/pihole_admin_password
+    file: /etc/daggler-home/secrets/pihole_admin_password
