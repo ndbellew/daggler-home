@@ -1,0 +1,98 @@
+name: plex
+display_name: Plex Media Server
+suite: media
+
+description: Personal media library and streaming server
+
+provides:
+  - media-server
+  - video-streaming
+  - music-streaming
+  - media-library
+
+resources:
+  cpu_cores_min: 2
+  memory_mb_min: 1024
+
+deployment:
+  compose_service: plex
+
+ports:
+  - port: 32400
+    protocol: tcp
+    external: true
+
+  - port: 8324
+    protocol: tcp
+    external: true
+
+  - port: 32469
+    protocol: tcp
+    external: true
+
+  - port: 1900
+    protocol: udp
+    external: true
+
+  - port: 32410
+    protocol: udp
+    external: true
+
+  - port: 32412
+    protocol: udp
+    external: true
+
+  - port: 32413
+    protocol: udp
+    external: true
+
+  - port: 32414
+    protocol: udp
+    external: true
+
+storage:
+  - source: /var/lib/daggler-home/plex/config
+    target: /config
+
+  - source: /var/lib/daggler-home/plex/transcode
+    target: /transcode
+
+media:
+  libraries:
+    - name: Movies
+      type: movies
+      source_env: PLEX_MOVIES_PATH
+      default_source: /srv/media/movies
+      target: /media/movies
+      read_only: true
+
+    - name: TV Shows
+      type: tv
+      source_env: PLEX_TV_PATH
+      default_source: /srv/media/tv
+      target: /media/tv
+      read_only: true
+
+    - name: Music
+      type: music
+      source_env: PLEX_MUSIC_PATH
+      default_source: /srv/media/music
+      target: /media/music
+      read_only: true
+
+    - name: Photos
+      type: photos
+      source_env: PLEX_PHOTOS_PATH
+      default_source: /srv/media/photos
+      target: /media/photos
+      read_only: true
+
+web:
+  enabled: true
+  hostname: plex
+  protocol: http
+  port: 32400
+
+hardware:
+  transcoding:
+    gpu_optional: true

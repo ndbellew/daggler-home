@@ -1,0 +1,33 @@
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: daggler-plex
+    hostname: plex
+    restart: unless-stopped
+
+    environment:
+      TZ: "${TZ}"
+      PLEX_CLAIM: "${PLEX_CLAIM:-}"
+      ADVERTISE_IP: "http://${DAGGLER_LAN_IP}:32400/"
+
+    ports:
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32400:32400/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:8324:8324/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32469:32469/tcp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:1900:1900/udp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32410:32410/udp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32412:32412/udp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32413:32413/udp"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:32414:32414/udp"
+
+    volumes:
+      - /var/lib/daggler-home/plex/config:/config
+      - /var/lib/daggler-home/plex/transcode:/transcode
+
+      - "${PLEX_MOVIES_PATH:-/srv/media/movies}:/media/movies:ro"
+      - "${PLEX_TV_PATH:-/srv/media/tv}:/media/tv:ro"
+      - "${PLEX_MUSIC_PATH:-/srv/media/music}:/media/music:ro"
+      - "${PLEX_PHOTOS_PATH:-/srv/media/photos}:/media/photos:ro"
+
+    networks:
+      - daggler
