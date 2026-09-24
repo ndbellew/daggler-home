@@ -1,0 +1,31 @@
+
+
+odysseus.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy 192.168.4.35:7000
+}
+
+grafana.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy grafana:3000
+}
+
+prometheus.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy prometheus:9090
+}
+
+pihole.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy pihole:80
+}
+
+portainer.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy portainer:9000
+}
+
+wazuh.{$DAGGLER_DOMAIN} {
+    tls internal
+    reverse_proxy wazuh:443
+}

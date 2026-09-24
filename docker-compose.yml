@@ -13,37 +13,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/daggler-home/portainer:/data
 
-  unbound:
-    build:
-      context: ./services/unbound
-    image: daggler-home/unbound:local
-    container_name: daggler-unbound
-    restart: unless-stopped
-    networks:
-      dns:
-        aliases:
-          - unbound
-
-  caddy:
-    image: caddy:2
-    container_name: daggler-caddy
-    restart: unless-stopped
-    environment:
-      DAGGLER_DOMAIN: "${DAGGLER_DOMAIN:-daggler.home.arpa}"
-
-    ports:
-      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:80:80"
-      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:443:443"
-
-    volumes:
-      - ./services/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - /var/lib/daggler-home/caddy/data:/data
-      - /var/lib/daggler-home/caddy/config:/config
-
-    networks:
-      - default
-      - dns
-      - monitoring
 
   prometheus:
     image: prom/prometheus:latest
@@ -89,36 +58,6 @@ services:
     secrets:
       - grafana_admin_password
     restart: unless-stopped
-
-  pihole:
-    image: pihole/pihole:2026.07.2
-    container_name: daggler-pihole
-    hostname: pihole
-    restart: unless-stopped
-
-    depends_on:
-      - unbound
-
-    ports:
-      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:53:53/tcp"
-      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:53:53/udp"
-      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:8080:80/tcp"
-
-    environment:
-      TZ: "${TZ}"
-      WEBPASSWORD_FILE: pihole_admin_password
-      FTLCONF_dns_upstreams: "unbound#5335"
-      FTLCONF_dns_listeningMode: "ALL"
-      FTLCONF_dns_dnssec: "false"
-
-    secrets:
-      - pihole_admin_password
-
-    volumes:
-      - /var/lib/daggler-home/pihole:/etc/pihole
-
-    networks:
-      - dns
 
 secrets:
   pihole_admin_password:

@@ -1,0 +1,33 @@
+name: unbound
+display_name: Unbound
+suite: network
+
+description: Recursive DNS resolver
+
+provides:
+  - dns-upstream
+  - recursive-dns
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 128
+
+deployment:
+  compose_service: unbound
+
+network:
+  aliases:
+    - unbound
+
+ports:
+  - port: 5335
+    protocol: tcp
+    internal: true
+  - port: 5335
+    protocol: udp
+    internal: true
+
+health:
+  type: dns
+  host: unbound
+  port: 5335

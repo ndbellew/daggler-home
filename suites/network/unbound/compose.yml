@@ -1,0 +1,12 @@
+services:
+  unbound:
+    build:
+      context: .
+    image: daggler-home/unbound:local
+    container_name: daggler-unbound
+    restart: unless-stopped
+
+    networks:
+      dns:
+        aliases:
+          - unbound

@@ -1,0 +1,21 @@
+services:
+  caddy:
+    image: caddy:2
+    container_name: daggler-caddy
+    restart: unless-stopped
+
+    environment:
+      DAGGLER_DOMAIN: "${DAGGLER_DOMAIN:-daggler.home.arpa}"
+
+    ports:
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:80:80"
+      - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:443:443"
+
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /var/lib/daggler-home/caddy/data:/data
+      - /var/lib/daggler-home/caddy/config:/config
+
+    networks:
+      - dns
+      - proxy

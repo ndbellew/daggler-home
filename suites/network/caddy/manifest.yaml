@@ -1,0 +1,31 @@
+name: caddy
+display_name: Caddy
+suite: network
+
+description: Reverse proxy and HTTPS gateway
+
+provides:
+  - reverse-proxy
+  - https
+  - tls-termination
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 128
+
+deployment:
+  compose_service: caddy
+
+ports:
+  - port: 80
+    protocol: tcp
+
+  - port: 443
+    protocol: tcp
+
+storage:
+  - source: /var/lib/daggler-home/caddy/data
+    target: /data
+
+  - source: /var/lib/daggler-home/caddy/config
+    target: /config

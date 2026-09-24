@@ -1,0 +1,3 @@
+include:
+  - ./suites/network/compose.yaml
+  - ./suites/utilities/compose.yaml

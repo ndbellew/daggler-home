@@ -1,0 +1,36 @@
+name: pihole
+display_name: Pi-hole
+suite: network
+
+description: Network-wide DNS filtering
+
+provides:
+  - dns-server
+  - dns-filtering
+
+dependencies:
+  dns-upstream:
+    required: true
+    default: unbound
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 256
+
+deployment:
+  compose_service: pihole
+
+ports:
+  - port: 53
+    protocol: tcp
+
+  - port: 53
+    protocol: udp
+
+  - port: 80
+    protocol: tcp
+    external_default: 8080
+
+storage:
+  - source: /var/lib/daggler-home/pihole
+    target: /etc/pihole

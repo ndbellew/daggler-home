@@ -1,0 +1,15 @@
+include:
+  - ./unbound/compose.yaml
+  - ./pihole/compose.yaml
+  - ./caddy/compose.yaml
+
+networks:
+  dns:
+    name: daggler-dns
+
+  proxy:
+    name: daggler-proxy
+
+secrets:
+  pihole_admin_password:
+    file: ../../secrets/pihole_admin_password
