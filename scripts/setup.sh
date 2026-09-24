@@ -25,3 +25,6 @@ openssl rand -base64 24 | \
 sudo tee /etc/daggler-home/secrets/grafana_admin_password >/dev/null
 
 sudo chmod 600 /etc/daggler-home/secrets/*
+
+sudo chown -R 472:472 /var/lib/daggler-home/grafana
+sudo chown -R 65534:65534 /var/lib/daggler-home/prometheus
