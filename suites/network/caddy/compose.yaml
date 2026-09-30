@@ -6,6 +6,8 @@ services:
 
     environment:
       DAGGLER_DOMAIN: "${DAGGLER_DOMAIN:-daggler.home.arpa}"
+      OPENCLAW_HOST: ${OPENCLAW_HOST}
+      OPENCLAW_PORT: ${OPENCLAW_PORT}
 
     ports:
       - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:80:80"
