@@ -8,6 +8,8 @@ services:
       DAGGLER_DOMAIN: "${DAGGLER_DOMAIN:-daggler.home.arpa}"
       OPENCLAW_HOST: ${OPENCLAW_HOST}
       OPENCLAW_PORT: ${OPENCLAW_PORT}
+      PROMETHEUS_HOST: ${PROMETHEUS_HOST}
+      PROMETHEUS_PORT: ${PROMETHEUS_PORT:-9090}
 
     ports:
       - "${DAGGLER_LAN_IP:?DAGGLER_LAN_IP_must_be_set}:80:80"
