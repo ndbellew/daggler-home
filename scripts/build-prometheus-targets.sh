@@ -5,6 +5,8 @@ TARGETS="${PROMETHEUS_NODE_TARGETS:?PROMETHEUS_NODE_TARGETS must be set}"
 
 IFS=',' read -ra HOSTS <<< "$TARGETS"
 
+mkdir -p ./prometheus
+
 {
   echo "- targets:"
   for host in "${HOSTS[@]}"; do
