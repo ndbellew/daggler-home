@@ -21,15 +21,25 @@ fi
 echo
 echo "Checking Caddy..."
 
-if curl -kfsS \
-    --resolve "grafana.${DAGGLER_DOMAIN}:443:${DAGGLER_IP}" \
-    "https://grafana.${DAGGLER_DOMAIN}/api/health" >/dev/null; then
+CADDY_OK=false
+
+for _ in {1..15}; do
+    if curl -kfsS \
+        --resolve "grafana.${DAGGLER_DOMAIN}:443:${DAGGLER_IP}" \
+        "https://grafana.${DAGGLER_DOMAIN}/api/health" >/dev/null; then
+        CADDY_OK=true
+        break
+    fi
+
+    sleep 1
+done
+
+if [[ "${CADDY_OK}" == true ]]; then
     echo "✓ Caddy HTTPS reverse proxy is working"
 else
     echo "✗ Caddy routing test failed"
     exit 1
 fi
-
 echo
 echo "Checking system resolver..."
 
