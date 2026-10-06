@@ -3,6 +3,7 @@ set -euo pipefail
 
 root_dir="$(pwd)"
 script_dir="$root_dir/scripts"
+source .env
 
 cd $script_dir
 bash bootstrap.sh
