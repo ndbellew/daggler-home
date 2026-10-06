@@ -3,6 +3,7 @@ services:
     image: prom/node-exporter:latest
     container_name: daggler-node-exporter
     restart: unless-stopped
+    uts: host
 
     command:
       - --path.rootfs=/host
