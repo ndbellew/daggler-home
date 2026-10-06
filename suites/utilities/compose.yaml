@@ -3,6 +3,7 @@ include:
   - ./grafana/compose.yaml
   - ./prometheus/compose.yaml
   - ./portainer/compose.yaml
+  - ./node-exporter/compose.yaml
 
 secrets:
   grafana_admin_password:
@@ -14,3 +15,7 @@ volumes:
 
   grafana_data:
     name: daggler-grafana-data
+
+networks:
+  monitoring:
+    name: daggler-monitoring

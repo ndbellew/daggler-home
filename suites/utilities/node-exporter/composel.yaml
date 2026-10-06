@@ -1,0 +1,27 @@
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: daggler-node-exporter
+    restart: unless-stopped
+
+    command:
+      - --path.rootfs=/host
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
+
+    volumes:
+      - /:/host:ro,rslave
+
+    networks:
+      - monitoring
+
+    ports:
+      - "127.0.0.1:9100:9100"
+
+    security_opt:
+      - no-new-privileges:true
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

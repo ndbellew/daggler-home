@@ -1,0 +1,32 @@
+name: node-exporter
+display_name: Node Exporter
+suite: utilities
+
+description: Host system metrics exporter for Prometheus monitoring
+
+provides:
+  - host-metrics
+  - system-metrics
+  - prometheus-exporter
+
+dependencies:
+  metrics-collector:
+    required: false
+    default: prometheus
+
+resources:
+  cpu_cores_min: 1
+  memory_mb_min: 64
+
+deployment:
+  compose_service: node-exporter
+
+ports:
+  - port: 9100
+    protocol: tcp
+    internal: true
+
+storage: []
+
+web:
+  enabled: false
