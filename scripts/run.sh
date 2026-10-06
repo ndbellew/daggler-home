@@ -1,7 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")"
+
 bash bootstrap.sh
-cd ..
+bash scripts/build-prometheus-targets.sh
+
 docker compose up --build -d
-cd scripts
-bash configure-network.sh
-cd ..
+
+bash scripts/configure-network.sh
+
 docker compose logs -f --tail=20

@@ -21,10 +21,10 @@ fi
 echo
 echo "Checking Caddy..."
 
-if curl -fsSI \
-    --resolve "grafana.${DAGGLER_DOMAIN}:80:${DAGGLER_IP}" \
-    "http://grafana.${DAGGLER_DOMAIN}" >/dev/null; then
-    echo "✓ Caddy reverse proxy is reachable"
+if curl -kfsS \
+    --resolve "grafana.${DAGGLER_DOMAIN}:443:${DAGGLER_IP}" \
+    "https://grafana.${DAGGLER_DOMAIN}/api/health" >/dev/null; then
+    echo "✓ Caddy HTTPS reverse proxy is working"
 else
     echo "✗ Caddy routing test failed"
     exit 1
@@ -36,7 +36,7 @@ echo "Checking system resolver..."
 CURRENT_DNS="$(resolvectl dns 2>/dev/null || true)"
 
 if grep -q "${DAGGLER_IP}" <<< "${CURRENT_DNS}"; then
-    echo "✓ This machine is already using Daggler DNS"
+    echo "✓ This machine is using Daggler DNS"
 else
     echo "! This machine is not using ${DAGGLER_IP} as DNS"
 fi

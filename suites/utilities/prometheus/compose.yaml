@@ -11,6 +11,7 @@ services:
 
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./targets.yaml:/etc/prometheus/targets.yaml:ro
       - /var/lib/daggler-home/prometheus:/prometheus
 
     networks:

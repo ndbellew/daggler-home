@@ -6,7 +6,12 @@ scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets:
-          - prometheus:9090
+          - localhost:9090
+
+  - job_name: daggler-nodes
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets.yaml
 
   - job_name: node-exporter
     static_configs:
