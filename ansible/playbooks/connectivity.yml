@@ -1,0 +1,17 @@
+# Ansible playbook to verify connectivity to all hosts
+---
+- name: Verify Ansible connectivity to all hosts
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Ping all hosts
+      ansible.builtin.ping:
+      register: ping_result
+    - name: Display connectivity status
+      ansible.builtin.debug:
+        msg: "Host {{ ansible_host }} is reachable"
+      when: ping_result is success
+    - name: Fail if host is unreachable
+      ansible.builtin.fail:
+        msg: "Host {{ ansible_host }} is unreachable"
+      when: ping_result is failed

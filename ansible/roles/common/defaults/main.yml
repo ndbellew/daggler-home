@@ -1,0 +1,44 @@
+# Default variables for the common role
+---
+# Common variables for all hosts
+common_packages:
+  - htop
+  - tmux
+  - tree
+  - curl
+  - wget
+  - git
+  - unzip
+  - zip
+
+# Time synchronization
+ntp_server: "pool.ntp.org"
+ntp_enabled: true
+
+# DNS configuration
+dns_servers:
+  - "8.8.8.8"
+  - "1.1.1.1"
+
+# Host info gathering
+gather_facts: true
+
+# Monitoring
+monitoring_enabled: true
+monitoring_interval: 300
+
+# Logging
+log_dir: "/var/log/common"
+log_file: "common.log"
+
+# Ensure log directory exists
+log_dir_ensure: true
+
+# Firewall rules
+firewall_enabled: true
+firewall_allow_ports:
+  - "22"  # SSH
+  - "80"  # HTTP
+  - "443" # HTTPS
+  - "2262" # Docker
+  - "8080" # Custom ports

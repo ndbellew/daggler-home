@@ -1,0 +1,11 @@
+# Chrony configuration
+server {{ ntp_server }} iburst
+# Allow NTP to sync time
+makestep 1.0 3
+# Log to syslog
+logdir /var/log/chrony
+# Log changes in time
+logchanges /var/log/chrony/chrony.log
+# Track sources reaching stratify 10
+# Allow all clients to be authenticated
+allow {{ ansible_hostname }}
